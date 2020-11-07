@@ -12,7 +12,7 @@ const request = {
 };
 
 const activities = {
-  list: () => request.get("/activities"),
+  list: (): Promise<IActivity[]> => request.get("/activities"),
   detail: (id: number) => request.get(`/activities/${id}`),
   create: (activity: IActivity) => request.post("/activities", activity),
   update: (activity: IActivity) =>

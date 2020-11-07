@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
-import agent from "../api/agent";
-import { IActivity } from "../models/activity";
-import message from "../utils/message";
+import React, { useContext, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import Activity from "../components/Activity.Component";
+import activityStore from "../stores/activityStore";
 
 const Activities = () => {
-  const [activitiesData, setActivitiesData] = useState<IActivity[] | null>([]);
+  const activityData = useContext(activityStore);
+
   useEffect(() => {
-    agent.activities.list().then((res) => {
-      setActivitiesData(res);
-      console.log(message.Sucessfull);
-    });
-  }, []);
+    activityData.getActivities();
+  }, [activityData]);
   return (
     <div>
-      {activitiesData?.map((act) => (
-        <Activity key={act.id} activity={act} />
-      ))}
+      {activityData &&
+        activityData.activities?.map((act) => (
+          <Activity key={act.id} activity={act} />
+        ))}
     </div>
   );
 };
 
-export default Activities;
+export default observer(Activities);
